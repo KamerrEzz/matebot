@@ -1,1 +1,3 @@
-# proyecto matebot en frontendcafe asas
+# proyecto matebot en frontendcafe
+
+## cosas que hacer
