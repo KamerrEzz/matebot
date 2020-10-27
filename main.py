@@ -24,6 +24,7 @@ if __name__ == '__main__':
 
     # Lista de módulos activa
     bot.add_cog(modules.Music(bot))
+    bot.add_cog(modules.Other(bot))
 
     TOKEN = os.getenv("DISCORD_TOKEN")
     logging.info('Bot started ...')
