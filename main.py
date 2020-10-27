@@ -1,38 +1,31 @@
-# bot.py
+#! /usr/bin/env python3
+# -*- coding: UTF-8 -*-
+
 import os
-
+import logging
+from dotenv import load_dotenv
 import discord
-# from dotenv import load_dotenv
+from discord.ext import commands
+import modules
 
-# load_dotenv()
-# TOKEN = os.getenv('DISCORD_TOKEN')
+def config_log():
+    logging.basicConfig(
+        format = '%(asctime)-30s %(name)-20s %(levelname)-10s %(message)s',
+        level = logging.INFO,
+    )
 
-client = discord.Client()
+if __name__ == '__main__':
+    load_dotenv()
+    config_log()
+    bot = commands.Bot(
+        command_prefix=commands.when_mentioned_or("!"),
+        description='Relatively simple music bot example'
+    )
 
-@client.event
-async def on_ready():
-    print(f'{client.user} se ha conectado a tu Discord!')
+    # Lista de activa de módulos
+    bot.add_cog(modules.Music(bot))
 
+    TOKEN = os.getenv("DISCORD_TOKEN")
+    logging.info('Bot started ...')
+    bot.run(TOKEN)
 
-class MyClient(discord.Client):
-    async def on_ready(self):
-        print('Logueado como', self.user)
-
-    async def on_message(self, message):
-        # don't respond to ourselves
-        if message.author == self.user:
-            return
-
-        if message.content == 'ping':
-            await message.channel.send('pong')
-
-        if message.content == 'Hola!':
-            await message.channel.send('¡Hola! ¿Cómo estás? Bienvenido a mi Servidor, soy un proyecto de miembros de FrontEndCafé. ¿Querés un matesito? :)')
-
-        if message.content == '!link':
-            await message.channel.send('Enlace para invitar a Discord FrontEndCafé: https://discord.com/invite/3GC6TJd')
-
-
-client = MyClient()
-
-client.run("")
