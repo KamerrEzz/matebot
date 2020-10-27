@@ -22,7 +22,7 @@ if __name__ == '__main__':
         description='Relatively simple music bot example'
     )
 
-    # Lista de activa de módulos
+    # Lista de módulos activa
     bot.add_cog(modules.Music(bot))
 
     TOKEN = os.getenv("DISCORD_TOKEN")
