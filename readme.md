@@ -1,3 +1,1 @@
-# proyecto matebot en frontendcafe
-
-## cosas que hacer
+# Proyecto de bot hecho en Python para frontendcafe
