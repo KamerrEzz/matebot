@@ -2,11 +2,15 @@
 # -*- coding: UTF-8 -*-
 
 import os
+import sys
 import logging
 from dotenv import load_dotenv
 import discord
 from discord.ext import commands
 import modules
+
+
+log = logging.getLogger("main")
 
 def config_log():
     logging.basicConfig(
@@ -19,14 +23,18 @@ if __name__ == '__main__':
     config_log()
     bot = commands.Bot(
         command_prefix=commands.when_mentioned_or("!"),
-        description='Relatively simple music bot example'
+        description='Relatively simple music bot example',
+        help_command=None
     )
 
     # Lista de módulos activa
+    bot.add_cog(modules.Help(bot))
     bot.add_cog(modules.Music(bot))
     bot.add_cog(modules.Other(bot))
 
     TOKEN = os.getenv("DISCORD_TOKEN")
-    logging.info('Bot started ...')
+    if TOKEN == None:
+        log.info('Token not found ...')
+        sys.exit(0)
+    log.info('Bot started ...')
     bot.run(TOKEN)
-

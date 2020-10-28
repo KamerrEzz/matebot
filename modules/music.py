@@ -17,7 +17,7 @@ class Music(commands.Cog):
         print('Logged in as {0} ({0.id})'.format(self.bot.user))
         print('------')
 
-    # los main commands no pueden suplicarse entre clases
+    # los main commands no pueden duplicarse entre clases
     # el objeto bot va registrando todos los comandos con el decorador
     @commands.command()
     async def main_add(self, ctx, left: int, right: int):
@@ -25,7 +25,7 @@ class Music(commands.Cog):
         log.info('add call')
         await ctx.send(left + right)
 
-    # defino un group command
+    # defino un command group
     @commands.group()
     async def music(self, ctx):
         if ctx.invoked_subcommand is None:
@@ -38,4 +38,8 @@ class Music(commands.Cog):
         log.info('add call')
         await ctx.send(left + right)
 
+    @music.command()
+    async def play(self, ctx, *text):
+        log.info('play call')
+        await ctx.send(" ".join(text))
 
