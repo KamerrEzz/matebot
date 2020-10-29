@@ -9,7 +9,6 @@ import discord
 from discord.ext import commands
 import modules
 
-
 log = logging.getLogger("main")
 
 def config_log():

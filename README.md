@@ -39,7 +39,7 @@ bot.add_cog(modules.General(bot))
 
 ## Composición de un módulo
 
-Un `module` es simplemente una subclase que hereda clase [discord.ext.commands.Cog](https://discordpy.readthedocs.io/en/latest/ext/commands/cogs.html).
+Un `module` es simplemente una subclase que hereda la clase [discord.ext.commands.Cog](https://discordpy.readthedocs.io/en/latest/ext/commands/cogs.html).
 Dentro de esta clase, y haciendo uso de los decoradores, se pueden definir:
 
 - Comandos con el decorador `@commands.command()`.
