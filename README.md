@@ -60,6 +60,8 @@ from .general import General
 ```
 
 ```python
+# general.py
+
 import discord
 from discord.ext import commands
 import random
