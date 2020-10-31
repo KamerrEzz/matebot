@@ -23,10 +23,6 @@ if __name__ == '__main__':
         description='Ayudaaa',
         help_command=None
     )
-    
-    # @bot.command()
-    # async def ping(ctx):
-    #     await ctx.send('pong')
 
     # Lista de módulos activa
     bot.add_cog(modules.FAQ(bot))
