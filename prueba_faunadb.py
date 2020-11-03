@@ -15,7 +15,7 @@ client = FaunaClient(secret = DB_KEY)
 client.query(
     q.create(
         q.collection("faqs"), # La coleccion que se crea en la BD
-        {"data": {"UserName": " NewUser","Password": "user123"}} # Se agregan los valores de la key data
+        {"data": {"UserName": "FEC","Password": "1111"}} # Se agregan los valores de la key data
     ))
 
 # Indezacion de datos
