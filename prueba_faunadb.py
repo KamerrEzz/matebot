@@ -33,6 +33,6 @@ for i in range(0, len(result), 1):
     # print(result[i]) # Muestra los Ref de cada dato
     faqdetails = client.query(q.get(q.ref(q.collection('faqs'), result[i])))
     detailslist = [faqdetails['data']]
-    # print(detailslist) # Muestro lista de diccionario con datos
+    # print(detailslist) # Muestro lista de diccionario con datos5
     print('Nombre de usuario:', detailslist[0].get('UserName'),
             '\tContrasenia: ', detailslist[0].get('Password'))
