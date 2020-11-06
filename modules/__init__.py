@@ -1,5 +1,8 @@
-# -*- coding: UTF-8 -*-
+# -*- coding: utf-8 -*-
 
+from .general import General
 from .help import Help
-from .music import Music
-from .other import Other
+#from .schedule import Schedule
+#from .music import Music
+#from .other import Other
+#from .search import Search

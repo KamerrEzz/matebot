@@ -1,9 +1,9 @@
-# -*- coding: UTF-8 -*-
+# -*- coding: utf-8 -*-
 
 import logging
 import discord
 from discord.ext import commands
-import random
+from discord.ext.commands import CommandNotFound
 
 log = logging.getLogger(__name__)
 
@@ -11,6 +11,9 @@ class General(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
 
-    @commands.command()
-    async def faq(self, ctx):
-        pass
+    # Ignoro los comandos que no existen
+    # @commands.Cog.listener()
+    # async def on_command_error(self, ctx, error):
+    #     if isinstance(error, CommandNotFound):
+    #         return
+    #     raise error

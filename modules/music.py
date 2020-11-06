@@ -1,9 +1,8 @@
-# -*- coding: UTF-8 -*-
+# -*- coding: utf-8 -*-
 
 import logging
 import discord
 from discord.ext import commands
-import random
 
 log = logging.getLogger(__name__)
 

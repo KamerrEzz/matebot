@@ -1,9 +1,8 @@
-# -*- coding: UTF-8 -*-
+# -*- coding: utf-8 -*-
 
 import logging
 import discord
 from discord.ext import commands
-import random
 
 log = logging.getLogger(__name__)
 
@@ -13,8 +12,14 @@ class Help(commands.Cog):
 
     @commands.group()
     async def help(self, ctx):
+        """
+        Imprimo la ayuda general
+        """
         log.info('Show commands list')
 
     @help.command()
     async def music(self, ctx):
+        """
+        Imprimo la ayuda del comando music
+        """
         log.info("Show subcommand list for `music`")
