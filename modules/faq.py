@@ -29,7 +29,7 @@ class FAQ(commands.Cog):
         __init__ del bot (importa este codigo como modulo al bot)
         '''
         self.bot = bot
-    
+    #! !faq
     #! Comando faq
     @commands.group()
     async def faq(self, ctx):

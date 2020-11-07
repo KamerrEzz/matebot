@@ -27,7 +27,7 @@ if __name__ == '__main__':
     # Lista de módulos activa
     bot.add_cog(modules.FAQ(bot))
 
-    load_dotenv()
+    # load_dotenv()
     TOKEN = os.getenv("DISCORD_TOKEN")
 
     if TOKEN == None:
