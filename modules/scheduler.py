@@ -57,7 +57,7 @@ class Scheduler(commands.Cog):
                 msg = self.generate_msg(doc, "Evento agregado")
                 await ctx.send(msg)
             else:
-                await ctx.send("ERROR: por favor especifique una fecha posterior a la fecha actual.")
+                await ctx.send("ERROR: especifique una fecha posterior a la fecha actual.")
         except:
             log.info("Error: datetime format error")
             await ctx.send("ERROR: por favor verifique el formato introducido.")
@@ -69,8 +69,12 @@ class Scheduler(commands.Cog):
         msg = ""
         if docs != []:
             for doc in docs:
-                msg_in = msg_in + f"- {doc['ref'].id()} | {doc['data']['time'].value} UTC | {doc['data']['author']}\n"
-            msg = f"```md\n### Lista de eventos ###\n\n- id | time | author\n{msg_in}```"
+                msg_in = msg_in + "- {0} | {1} | {2}\n".format(
+                    doc['ref'].id(),
+                    doc['data']['time'].value,
+                    doc['data']['author']
+                )
+            msg = "```md\n### Lista de eventos ###\n\n- id | time | author\n{}```".format(msg_in)
         else:
             msg = "```md\n### Lista vacía ###\n```"
         await ctx.send(msg)
@@ -105,11 +109,11 @@ Ejemplos:
         """
         await ctx.send(msg)
 
-    def geretate_msg(self, doc, title):
-        return f"```md\n# {title}\n" + \
-               f"- id:     {doc['ref'].id()}\n" + \
-               f"- time:   {doc['data']['time'].value} UTC\n" + \
-               f"- author: {doc['data']['author']}\n```"
+    def generate_msg(self, doc, title):
+        return "```md\n# {}\n".format(title) + \
+            "- id:     {}\n"    .format(doc['ref'].id()) + \
+            "- time:   {} UTC\n".format(doc['data']['time'].value) + \
+            "- author: {}\n```" .format(doc['data']['author'])
 
 # Manejo los recordatorios
 class Reminder:
@@ -185,14 +189,14 @@ class Reminder:
         ]
 
         jobs_id = []
-        for r in reminders:
-            if dt_event > dt_now + r['delta']:
-                log.info(f"Add event {r['time']}")
+        for reminder in reminders:
+            if dt_event > dt_now + reminder['delta']:
+                log.info("Add event %s", reminder['time'])
                 job = self.sched.add_job(
                     self.event,
                     'date',
-                    run_date=(dt_event - r['delta']),
-                    args=[r['message'], url, channel_id]
+                    run_date=(dt_event - reminder['delta']),
+                    args=[reminder['message'], url, channel_id]
                 )
                 jobs_id.append(job.id)
 

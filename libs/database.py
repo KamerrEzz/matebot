@@ -7,18 +7,21 @@ from faunadb.client import FaunaClient
 
 log = logging.getLogger(__name__)
 
-# Ejemplo de implementación de un decorators
 def log_debug(f):
+    """
+    Ejemplo de implementación de un decorator
+    """
     def wrapper(*args, **kwargs):
-        d = f(*args, **kwargs)
-        log.info(f"{f.__name__}{args[1:]}\n{d}")
-        return d
+        func = f(*args, **kwargs)
+        log.info("%s%s\n%s", f.__name__, args[1:], func)
+        return func
     return wrapper
 
 class Database:
     """
-    Para obtener el id de un documento:
+    Clase utilizada para definir querys
 
+    Para obtener el id de un documento:
     doc["ref"].id()
 
     """
@@ -30,6 +33,7 @@ class Database:
         """
         Creo la colección e índices utilizados
         """
+
         # Creo la colección
         self.client.query(
             q.create_collection({
@@ -80,13 +84,11 @@ class Database:
         """
         Obtiene un documento de una colección por el id
         """
-        d = self.client.query(
+        return self.client.query(
             q.get(
                 q.ref(q.collection(collection), id_)
             )
         )
-        log.debug(f"get: {d}")
-        return d
 
     @log_debug
     def get_all(self, index):
@@ -102,6 +104,7 @@ class Database:
 
     def get_by_expired_time(self, index):
         """
+        Obtengo todos los documentos con fechas anteriores a la actual
         """
         return self.client.query(
             q.map_(
@@ -116,7 +119,7 @@ class Database:
 
     def update(self, collection, id_, data):
         """
-        Actualiza los datos dentro de un documento, pero mantiene los 
+        Actualiza los datos dentro de un documento, pero mantiene los
         campos que no estan definidos en los nuevos datos
         """
         return self.client.query(

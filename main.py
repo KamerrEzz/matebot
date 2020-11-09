@@ -14,11 +14,11 @@ log = logging.getLogger("main")
 
 def config_log():
     logging.basicConfig(
-        format = '%(asctime)-30s %(name)-20s %(levelname)-10s %(message)s',
+        format = "%(asctime)-30s %(name)-20s %(levelname)-10s %(message)s",
         level = logging.INFO,
     )
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     load_dotenv()
     config_log()
 
@@ -28,7 +28,7 @@ if __name__ == '__main__':
 
     bot = commands.Bot(
         command_prefix=commands.when_mentioned_or(PREFIX),
-        description='Relatively simple music bot example',
+        description="Relatively simple music bot example",
         help_command=None
     )
 
@@ -38,7 +38,7 @@ if __name__ == '__main__':
     bot.add_cog(modules.Scheduler(bot))
 
     if TOKEN == None:
-        log.info('Token not found ...')
+        log.info("Token not found ...")
         sys.exit(0)
-    log.info('Bot started ...')
+    log.info("Bot started ...")
     bot.run(TOKEN)
