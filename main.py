@@ -35,6 +35,7 @@ if __name__ == "__main__":
     # Lista de módulos activa
     bot.add_cog(modules.Help(bot))
     bot.add_cog(modules.General(bot))
+    bot.add_cog(modules.Events(bot))
     bot.add_cog(modules.Scheduler(bot))
 
     if TOKEN == None:

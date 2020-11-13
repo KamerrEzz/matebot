@@ -1,4 +1,17 @@
-# Proyecto Matebot de FrontEndCafe
+# Matebot de FrontEndCafe
+
+## Indice
+
+- [Organización y estructura](#organización-y-estructura)
+- [Módulos](#organización-y-estructura)
+  - [Bienvenida](#bienvenida)
+  - [FAQs](#faqs)
+  - [Roles](#roles)
+  - [Notificaciones del server](#notificaciones-del-server)
+  - [Recordatorio de eventos](#recordatorio-de-eventos)
+
+
+## Organización y estructura
 
 ## Usando módulos locales
 
@@ -104,5 +117,41 @@ class General(commands.Cog):
     async def sub_faq(self, ctx):
         pass
 ```
+
+## Módulos
+
+### Bienvenida
+TODO
+
+### Roles
+TODO
+
+### FAQs
+TODO
+
+### Notificaciones del server
+TODO
+
+### Recordatorios de eventos
+
+Se programan recordatorios con la siguente frecuencia de avisos:
+- Un(1) día antes
+- Una(1) hora antes
+- Dies(10) minútos antes
+
+Comandos:
+```
+sched add <url> <date> <time> <time_zone> <channel>
+sched list
+sched remove <id>
+sched help
+```
+
+Funcionamiento interno:
+
+El módulo utiliza 3 clases:
+- Scheduler: clase principal del módulo que se encarga de la interacción directa con Discord.
+- Reminder: clase encargada de crear, listar y remover los recordatorios.
+- Database: clase con la configuración de la base de datos (collections and indexes) y las queries que se utilizan para las distintas transacciones.
 
 

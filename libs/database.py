@@ -1,20 +1,23 @@
 # -*- coding: utf-8 -*-
 
 import logging
+import functools
 from faunadb import query as q
 from faunadb.client import FaunaClient
 #from faunadb.objects import Ref
 
 log = logging.getLogger(__name__)
 
-def log_debug(f):
+def log_debug(func):
     """
     Ejemplo de implementación de un decorator
     """
+    # Preserva la información de la función original
+    @functools.wraps(func)
     def wrapper(*args, **kwargs):
-        func = f(*args, **kwargs)
-        log.info("%s%s\n%s", f.__name__, args[1:], func)
-        return func
+        value = func(*args, **kwargs)
+        log.info("%s%s\n%s", func.__name__, args[1:], value)
+        return value
     return wrapper
 
 class Database:
