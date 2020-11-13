@@ -2,7 +2,7 @@
 
 import os
 import logging
-
+import asyncio
 import discord
 from discord.ext import commands
 import tweepy
@@ -36,27 +36,34 @@ class Events(commands.Cog):
         api = tweepy.API(auth, wait_on_rate_limit=True, wait_on_rate_limit_notify=True)
 
         # Creación de un objeto de tipo TweetsListener
-        stream = TweetsListener(bot)
+        stream = TweetsListener(
+            discord_post=self.discord_post,
+            loop=asyncio.get_event_loop()
+        )
 
         # Escucha la cuenta de twitter en búsqueda de nuevos twitts
-        streamingApi = tweepy.Stream(auth=api.auth, listener=stream)
+        self.streamingApi = tweepy.Stream(auth=api.auth, listener=stream)
 
         # Busca en la cuenta especificada los tweets con el hashtag definido
         hashtag = os.getenv("TWITTER_HASHTAG")
-        streamingApi.filter(
-            track=[hashtag]
+        self.streamingApi.filter(
+            track=[hashtag],
+            is_async=True
         )
 
-    async def post_news(self, url):
+    async def discord_post(self, url):
         # Publica el tweet con un mesanje @everyone
+        log.info("Twitter post")
         msg = "@everyone"
         channel = self.bot.get_channel(self.events_channel_id)
         await channel.send(f"{msg} {url}")
 
 class TweetsListener(tweepy.StreamListener):
-    def __init__(self, post_news):
+    def __init__(self, discord_post, loop, *args, **kwargs):
+        super().__init__(*args, **kwargs)
         # Funcion definida en la clase News
-        self.post_news = post_news
+        self.discord_post = discord_post
+        self.loop = loop
 
     def on_connect(self):
         # Me avisa que se conectó y todo esta OK
@@ -69,10 +76,16 @@ class TweetsListener(tweepy.StreamListener):
         # Obtengo el id del tweet
         id_tweet = status.id
         # Creo el link al tweet con una cuenta determinada
-        url_tweet = f"https://twitter.com/FrontEndCafe/status/{id_tweet}"
+        url_tweet = f"https://twitter.com/ljgago/status/{id_tweet}"
 
-        # El bot publica el tweet en discord
-        self.post_news(url_tweet)
+        # Envío el mensaje
+        self.send_message(url_tweet)
+
+    def send_message(self, msg):
+        asyncio.run_coroutine_threadsafe(
+            self.discord_post(msg),
+            self.loop
+        )
 
     def on_error(self, status_code):
         # Función que actúa frente a errores de conexión
