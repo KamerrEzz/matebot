@@ -19,11 +19,11 @@ def env_request():
     '''
     Descripción: Cargo archivo .env y obtengo la clave.
     Precondición: Tener archivo .env en la misma carpeta que este código
-    Postcondición: Retorno con la clave en DB_KEY y variable client del tipo FaunaClient
+    Postcondición: Retorno con la clave en DB_value y variable client del tipo FaunaClient
     '''
     load_dotenv()
-    DB_KEY = os.getenv("FAUNADB_SECKEY")
-    client = FaunaClient(secret = DB_KEY)
+    DB_value = os.getenv("FAUNADB_SECKEY")
+    client = FaunaClient(secret = DB_value)
     return client
 
 
@@ -34,11 +34,13 @@ def add_data(client):
     Precondición: Dar pregunta y respuesta
     Postcondición: Agrega datos nuevos a la base de datos.
     '''
+    print('Ingrese categoría: ', end='')
+    valueCategory = input()
     print('Ingrese pregunta: ', end='')
-    keyQuestion = input()
+    valueQuestion = input()
     print('Ingrese respuesta: ', end='')
     valueAnswer = input()
-    dataDict = {"Question": keyQuestion, "Answer": valueAnswer}
+    dataDict = {"Category": valueCategory, "Question": valueQuestion, "Answer": valueAnswer}
     client.query(
         q.create(
             q.collection("faqs"),
