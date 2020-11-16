@@ -69,7 +69,7 @@ class Database:
             )
         )
 
-    #@log_debug
+    @log_debug
     def create(self, collection, data):
         """
         Creo un documento en una colección existente
@@ -178,8 +178,7 @@ class Database:
                 lambda _, ref: q.delete(ref),
                 q.paginate(
                     q.range(
-                        q.match(q.index(index)), q.time("2020-01-01T00:00:00Z"), q.now()
-                    )
+                        q.match(q.index(index)), q.time("2020-01-01T00:00:00Z"), q.time_add(q.now(), 1, "minutes")
                 )
             )
         )
