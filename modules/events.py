@@ -3,6 +3,7 @@
 import os
 import logging
 import asyncio
+
 import discord
 from discord.ext import commands
 import tweepy
@@ -23,14 +24,14 @@ class Events(commands.Cog):
         self.events_channel_id = int(os.getenv("EVENTS_CHANNEL_ID"))
 
         # Se obtienen los valores correspondientes para la autenticación
-        consumer_key        = os.getenv("TWITTER_API_KEY")
-        consumer_secret     = os.getenv("TWITTER_API_SECRET_KEY")
-        access_token        = os.getenv("TWITTER_ACCESS_TOKEN")
-        access_token_secret = os.getenv("TWITTER_ACCESS_TOKEN_SECRET")
+        consumer_key    = os.getenv("TWITTER_API_KEY")
+        consumer_secret = os.getenv("TWITTER_API_SECRET")
+        access_key      = os.getenv("TWITTER_ACCESS_KEY")
+        access_secret   = os.getenv("TWITTER_ACCESS_SECRET")
 
         # Proceso de autenticación de la cuenta de twitter developer necesaria para utilizar la API
         auth = tweepy.OAuthHandler(consumer_key, consumer_secret)
-        auth.set_access_token(access_token, access_token_secret)
+        auth.set_access_token(access_key, access_secret)
 
         # Llamado a la API con el argumento auth que es la autorización, y espera alcanzar el limite de velocidad.
         api = tweepy.API(auth, wait_on_rate_limit=True, wait_on_rate_limit_notify=True)
@@ -41,12 +42,15 @@ class Events(commands.Cog):
             loop=asyncio.get_event_loop()
         )
 
-        # Escucha la cuenta de twitter en búsqueda de nuevos twitts
-        self.streamingApi = tweepy.Stream(auth=api.auth, listener=stream)
+        user_id = os.getenv("TWITTER_USER_ID")
+        hashtag = os.getenv("TWITTER_SEARCH")
 
-        # Busca en la cuenta especificada los tweets con el hashtag definido
-        hashtag = os.getenv("TWITTER_HASHTAG")
-        self.streamingApi.filter(
+        # Escucha la cuenta de twitter en búsqueda de nuevos twitts
+        streamingApi = tweepy.Stream(auth=api.auth, listener=stream)
+
+        # Busca en la cuenta especificada los tweets con el hashtag definidoV
+        streamingApi.filter(
+            follow=[user_id],
             track=[hashtag],
             is_async=True
         )
@@ -64,6 +68,7 @@ class TweetsListener(tweepy.StreamListener):
         # Funcion definida en la clase News
         self.discord_post = discord_post
         self.loop = loop
+        self.user_url = os.getenv("TWITTER_USER_URL")
 
     def on_connect(self):
         # Me avisa que se conectó y todo esta OK
@@ -76,7 +81,7 @@ class TweetsListener(tweepy.StreamListener):
         # Obtengo el id del tweet
         id_tweet = status.id
         # Creo el link al tweet con una cuenta determinada
-        url_tweet = f"https://twitter.com/ljgago/status/{id_tweet}"
+        url_tweet = f"{self.user_url}/status/{id_tweet}"
 
         # Envío el mensaje
         self.send_message(url_tweet)
@@ -90,3 +95,4 @@ class TweetsListener(tweepy.StreamListener):
     def on_error(self, status_code):
         # Función que actúa frente a errores de conexión
         log.info("Error: %s", status_code)
+
