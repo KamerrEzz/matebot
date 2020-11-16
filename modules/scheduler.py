@@ -55,10 +55,10 @@ class Scheduler(commands.Cog):
 
     @sched.command()
     async def add(self, ctx, url, date, time, time_zone, channel_id):
-    """Comando sched add
+        """Comando sched add
 
-    Agrega un nuevo evento y pograma los recordatorios.
-    """
+        Agrega un nuevo evento y pograma los recordatorios.
+        """
         log.info("Add new event to scheduler")
         try:
             doc = await self.reminder.add(ctx.author, url, date, time, time_zone, channel_id)
@@ -73,10 +73,10 @@ class Scheduler(commands.Cog):
 
     @sched.command()
     async def list(self, ctx):
-    """Comando sched list
+        """Comando sched list
 
-    Muestra todos eventos programados que estan vigentes.
-    """
+        Muestra todos eventos programados que estan vigentes.
+        """
         docs = await self.reminder.list()
         msg_in = ""
         msg = ""
@@ -94,10 +94,10 @@ class Scheduler(commands.Cog):
 
     @sched.command()
     async def remove(self, ctx, id_: str):
-    """Comando sched remove
+        """Comando sched remove
 
-    Elimina un evento programado.
-    """
+        Elimina un evento programado.
+        """
         log.info(ctx.author)
         doc = await self.reminder.remove(id_)
         msg = self.generate_msg(doc, "Evento eliminado")
@@ -105,10 +105,10 @@ class Scheduler(commands.Cog):
 
     @sched.command()
     async def help(self, ctx):
-    """Comando sched help
+        """Comando sched help
 
-    Muestra la ayuda.
-    """
+        Muestra la ayuda.
+        """
         PREFIX = os.getenv("DISCORD_PREFIX")
         msg = f"""
 ```md
@@ -140,3 +140,4 @@ Ejemplos:
     async def action(self, msg, url, channel_id):
         channel = self.bot.get_channel(channel_id)
         await channel.send(f"{msg}\n\n{url}")
+
