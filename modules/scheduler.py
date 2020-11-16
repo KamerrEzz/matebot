@@ -7,14 +7,12 @@ from datetime import timedelta
 import discord
 from discord.ext import commands
 
-from libs.database import Database as DB
 from libs.reminder import Reminder
 
 log = logging.getLogger(__name__)
 
 class Scheduler(commands.Cog):
-    """
-    Módulo Scheduler
+    """Módulo Scheduler
 
     Programa un evento y da aviso con las siguientes frecuencias:
     - 1 día antes
@@ -57,10 +55,14 @@ class Scheduler(commands.Cog):
 
     @sched.command()
     async def add(self, ctx, url, date, time, time_zone, channel_id):
+    """Comando sched add
+
+    Agrega un nuevo evento y pograma los recordatorios.
+    """
         log.info("Add new event to scheduler")
         try:
             doc = await self.reminder.add(ctx.author, url, date, time, time_zone, channel_id)
-            if doc == []:
+            if not doc:
                 await ctx.send("ERROR: especifique una fecha posterior a la fecha actual.")
                 return
             msg = self.generate_msg(doc, "Evento agregado")
@@ -71,10 +73,14 @@ class Scheduler(commands.Cog):
 
     @sched.command()
     async def list(self, ctx):
+    """Comando sched list
+
+    Muestra todos eventos programados que estan vigentes.
+    """
         docs = await self.reminder.list()
         msg_in = ""
         msg = ""
-        if docs != []:
+        if docs:
             for doc in docs:
                 msg_in = msg_in + "- {0} | {1} | {2}\n".format(
                     doc['ref'].id(),
@@ -88,6 +94,10 @@ class Scheduler(commands.Cog):
 
     @sched.command()
     async def remove(self, ctx, id_: str):
+    """Comando sched remove
+
+    Elimina un evento programado.
+    """
         log.info(ctx.author)
         doc = await self.reminder.remove(id_)
         msg = self.generate_msg(doc, "Evento eliminado")
@@ -95,6 +105,10 @@ class Scheduler(commands.Cog):
 
     @sched.command()
     async def help(self, ctx):
+    """Comando sched help
+
+    Muestra la ayuda.
+    """
         PREFIX = os.getenv("DISCORD_PREFIX")
         msg = f"""
 ```md

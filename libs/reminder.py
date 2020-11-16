@@ -22,6 +22,10 @@ log = logging.getLogger(__name__)
 #     return my_custome_decorator
 
 class Reminder:
+    """ Clase Reminder
+
+    Se encarga de almacenar los eventos y crear recordatorios.
+    """
     def __init__(self, secret):
         # Accedo a la base de datos
         self.db = DB(secret)
@@ -53,9 +57,7 @@ class Reminder:
     # Funciones publicas
 
     async def add(self, author, url, date, time, time_zone, channel_id):
-        """
-        Agrega un nuevo evento y crea los jobs de los recordatorios
-        """
+        """Agrega un nuevo evento y crea los recordatorios"""
         try:
             date_time = datetime.fromisoformat(f"{date}T{time}{time_zone}")
             date_time_now = datetime.utcnow().replace(tzinfo=timezone.utc)
@@ -85,13 +87,13 @@ class Reminder:
             pass
 
     async def load(self):
-        """
+        """Carga los eventos de la base de datos
+
         Se utiliza para cargar los eventos que están guardados en la base de
         datos al momento de inciar el programa.
 
         Lee los eventos de la base de datos, los carga en el scheduler y
         actuliza la base de datos con los nuevos jobs_id
-
         """
         docs = self.db.get_all("all_events")
         new_docs = []
@@ -111,16 +113,12 @@ class Reminder:
         return self.db.update_all_jobs("Events", new_docs)
 
     async def list(self):
-        """
-        Lista todos los eventos programados
-        """
+        """Lista todos los eventos programados"""
         events = self.db.get_all("all_events")
         return events['data']
 
     async def remove(self, id_):
-        """
-        Borro un evento programado
-        """
+        """Borro un evento programado"""
         return self._remove_by_id(id_)
 
     # Funciones privadas

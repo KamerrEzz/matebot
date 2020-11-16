@@ -21,21 +21,17 @@ def log_debug(func):
     return wrapper
 
 class Database:
-    """
-    Clase utilizada para definir querys
+    """Clase utilizada para definir querys
 
     Para obtener el id de un documento:
     doc["ref"].id()
-
     """
     def __init__(self, secret):
         self.q = q
         self.client = FaunaClient(secret=secret)
 
     def inicialize(self):
-        """
-        Creo la colección e índices utilizados
-        """
+        """Creo la colección e índices utilizados"""
 
         # Creo la colección
         self.client.query(
@@ -69,10 +65,8 @@ class Database:
             )
         )
 
-    @log_debug
     def create(self, collection, data):
-        """
-        Creo un documento en una colección existente
+        """Creo un documento en una colección existente
 
         create("my_collection", {"name": "John", "age": 30})
         """
@@ -84,8 +78,9 @@ class Database:
         )
 
     def get(self, collection, id_):
-        """
-        Obtiene un documento de una colección por el id
+        """Obtiene un documento de una colección por el id
+
+        get("my_collection", 1234567890)
         """
         return self.client.query(
             q.get(
@@ -93,10 +88,10 @@ class Database:
             )
         )
 
-    @log_debug
     def get_all(self, index):
-        """
-        Obtiene todos los documentos que hacen match con el index
+        """Obtiene todos los documentos que hacen match con el index
+
+        get_all("my_index")
         """
         return self.client.query(
             q.map_(
@@ -106,8 +101,9 @@ class Database:
         )
 
     def get_by_expired_time(self, index):
-        """
-        Obtengo todos los documentos con fechas anteriores a la actual
+        """Obtengo todos los documentos con fechas anteriores a la actual
+
+        get_by_expired_time("my_index")
         """
         return self.client.query(
             q.map_(
@@ -121,9 +117,12 @@ class Database:
         )
 
     def update(self, collection, id_, data):
-        """
+        """Actualiza datos
+
         Actualiza los datos dentro de un documento, pero mantiene los
         campos que no estan definidos en los nuevos datos
+
+        update("my_collection", 1234567890, {"name": "John", "age": 30})
         """
         return self.client.query(
             q.update(
@@ -132,9 +131,9 @@ class Database:
             )
         )
 
-    @log_debug
     def update_all_jobs(self, collection, array_data):
-        """
+        """Actualiza los jobs
+
         Actualizo todos los datos jobs en todos los documentos
         """
         # array_data = [(ref_id, {"jobs": jobs})]
@@ -148,9 +147,12 @@ class Database:
         )
 
     def replace(self, collection, id_, data):
-        """
+        """Reemplaza datos
+
         Reemplaza los datos existentes de un documento dentro de una
         colección
+
+        replace("my_collection", 1234567890, {"name": "John", "age": 30})
         """
         return self.client.query(
             q.replace(
@@ -160,8 +162,9 @@ class Database:
         )
 
     def delete(self, collection, id_):
-        """
-        Elimino un documento por el id
+        """Elimino un documento por el id
+
+        delete("my_collection", 1234567890)
         """
         return self.client.query(
             q.delete(
@@ -170,8 +173,9 @@ class Database:
         )
 
     def delete_by_expired_time(self, index):
-        """
-        Elimino todos los documentos que caducaron
+        """Elimino todos los documentos que caducaron
+
+        delete_by_expired_time("my_index")
         """
         return self.client.query(
             q.map_(
@@ -179,6 +183,7 @@ class Database:
                 q.paginate(
                     q.range(
                         q.match(q.index(index)), q.time("2020-01-01T00:00:00Z"), q.time_add(q.now(), 1, "minutes")
+                    )
                 )
             )
         )
