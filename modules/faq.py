@@ -17,11 +17,7 @@ log = logging.getLogger(__name__)
 #///---- Clase ----///
 class FAQ(commands.Cog):
     '''
-    Consulta y edición de FAQ:
-    Los comandos son los siguientes:
-        - !faq help --> Lista de subcomandos disponibles en FAQ.
-        - !faq all --> Envía por DM al usuario todo el FAQ completo.
-        - !faq 
+    Consulta y edición de FAQ
     '''
     def __init__(self, bot):
         '''
@@ -38,7 +34,7 @@ class FAQ(commands.Cog):
         Comando !faq
         '''
         if ctx.invoked_subcommand is None:
-            await ctx.send('Invalid command passed...')
+            await ctx.send("Este comando no existe! Tipea `!faq help` para ver los comandos disponibles :D")
 
     #! Subcomando help
     @faq.command()
@@ -231,7 +227,7 @@ class database:
         # Indezacion de datos
         allfaqs = self.client.query(
             q.paginate(
-                q.match(q.index('allfaqs'))
+                q.match(q.index('all_faqs'))
             )
         )
         allfaqslist = [allfaqs['data']]
@@ -239,6 +235,6 @@ class database:
 
         # Creación de lista de diccionarios
         for i in range(0, len(result), 1):
-            faqdetails = self.client.query(q.get(q.ref(q.collection('faqs'), result[i])))
+            faqdetails = self.client.query(q.get(q.ref(q.collection('FAQs'), result[i])))
             listFAQ += [faqdetails['data']]
         return listFAQ
