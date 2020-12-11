@@ -67,23 +67,30 @@ class FAQ(commands.Cog):
         Precondición: Escribir en un canal !faq all
         Poscondición: El bot envía por DM el FAQ
         '''
-        dataPrint = ["", "", ""]
+        dataPrint = [""] * 4
 
         dataFAQ = self.db.load()
         if len(dataFAQ) != 0:
-            for i, data in enumerate(dataFAQ):
+            for data in dataFAQ:
                 if len(dataPrint[0]) < 1500:
                     dataPrint[0] = dataPrint[0] + f"+{data['Question']}\n{data['Answer']}\n\n"
                 elif len(dataPrint[1]) < 1500:
                     dataPrint[1] = dataPrint[1] + f"+{data['Question']}\n{data['Answer']}\n\n"
-                else:
+                elif len(dataPrint[2]) < 1500:
                     dataPrint[2] = dataPrint[2] + f"+{data['Question']}\n{data['Answer']}\n\n"
-            message = ["FAQ completo:\n```diff\n" + dataPrint[0] + "```", "```diff\n" + dataPrint[1] + "```", "```diff\n" + dataPrint[2] + "```"] 
+                else:
+                    dataPrint[3] = dataPrint[3] + f"+{data['Question']}\n{data['Answer']}\n\n"
+            message =   ["FAQ completo:\n```diff\n" + dataPrint[0] + "```",
+                         "```diff\n" + dataPrint[1] + "```", 
+                         "```diff\n" + dataPrint[2] + "```", 
+                         "```diff\n" + dataPrint[3] + "```"] 
             await ctx.author.send(message[0])
             if len(dataPrint[1]) != 0:
                 await ctx.author.send(message[1])
             if len(dataPrint[2]) != 0:
                 await ctx.author.send(message[2])
+            if len(dataPrint[3]) != 0:
+                await ctx.author.send(message[3])
         else:
             await ctx.author.send('No hay datos para esta consulta. Contactar con los administradores!')
 
@@ -101,7 +108,7 @@ class FAQ(commands.Cog):
         dataFAQ = self.db.load()
         dataGen = [data for data in dataFAQ if data['Category'] == 'General']
         if len(dataGen) != 0:
-            for i, data in enumerate(dataGen):
+            for data in dataGen:
                 if len(dataPrint[0]) < 1500:
                     dataPrint[0] = dataPrint[0] + f"+{data['Question']}\n{data['Answer']}\n\n"
                 else:
@@ -127,7 +134,7 @@ class FAQ(commands.Cog):
         dataFAQ = self.db.load()
         dataGen = [data for data in dataFAQ if data['Category'] == 'English']
         if len(dataGen) != 0:
-            for i, data in enumerate(dataGen):
+            for data in dataGen:
                 if len(dataPrint[0]) < 1500:
                     dataPrint[0] = dataPrint[0] + f"+{data['Question']}\n{data['Answer']}\n\n"
                 else:
@@ -153,7 +160,7 @@ class FAQ(commands.Cog):
         dataFAQ = self.db.load()
         dataGen = [data for data in dataFAQ if data['Category'] == 'Mentoring']
         if len(dataGen) != 0:
-            for i, data in enumerate(dataGen):
+            for data in dataGen:
                 if len(dataPrint[0]) < 1500:
                     dataPrint[0] = dataPrint[0] + f"+{data['Question']}\n{data['Answer']}\n\n"
                 else:
@@ -179,7 +186,7 @@ class FAQ(commands.Cog):
         dataFAQ = self.db.load()
         dataGen = [data for data in dataFAQ if data['Category'] == 'Coworking']
         if len(dataGen) != 0:
-            for i, data in enumerate(dataGen):
+            for data in dataGen:
                 if len(dataPrint[0]) < 1500:
                     dataPrint[0] = dataPrint[0] + f"+{data['Question']}\n{data['Answer']}\n\n"
                 else:
@@ -205,7 +212,7 @@ class FAQ(commands.Cog):
         dataFAQ = self.db.load()
         dataGen = [data for data in dataFAQ if data['Category'] == 'Roles']
         if len(dataGen) != 0:
-            for i, data in enumerate(dataGen):
+            for data in dataGen:
                 if len(dataPrint[0]) < 1500:
                     dataPrint[0] = dataPrint[0] + f"+{data['Question']}\n{data['Answer']}\n\n"
                 else:
@@ -231,7 +238,7 @@ class FAQ(commands.Cog):
         dataFAQ = self.db.load()
         dataGen = [data for data in dataFAQ if data['Category'] == 'Projects']
         if len(dataGen) != 0:
-            for i, data in enumerate(dataGen):
+            for data in dataGen:
                 if len(dataPrint[0]) < 1500:
                     dataPrint[0] = dataPrint[0] + f"+{data['Question']}\n{data['Answer']}\n\n"
                 else:
@@ -257,7 +264,7 @@ class FAQ(commands.Cog):
         dataFAQ = self.db.load()
         dataGen = [data for data in dataFAQ if data['Category'] == 'Study-Group']
         if len(dataGen) != 0:
-            for i, data in enumerate(dataGen):
+            for data in dataGen:
                 if len(dataPrint[0]) < 1500:
                     dataPrint[0] = dataPrint[0] + f"+{data['Question']}\n{data['Answer']}\n\n"
                 else:
