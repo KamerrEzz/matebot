@@ -51,9 +51,10 @@ class FAQ(commands.Cog):
 !faq general: Preguntas generales sobre el uso de Discord y el servidor
 !faq english: Preguntas relacionadas a los eventos sobre Inglés
 !faq mentoring: Dudas sobre el sistema de mentorías
-!faq coworking: Sobre Coworking en FEC
-!faq roles: Que són y como se obtienen los roles
-!faq projects: Consulta sobre los proyectos activos
+!faq coworking: ¿Qué es el Coworking en FEC
+!faq roles: Que són y cómo se obtienen los roles
+!faq projects: Consulta sobre los proyectos grupales de desarrollo
+!faq study group: Consulta sobre los grupos de estudio
 ```
                 '''
         await ctx.send(lines)
@@ -66,14 +67,23 @@ class FAQ(commands.Cog):
         Precondición: Escribir en un canal !faq all
         Poscondición: El bot envía por DM el FAQ
         '''
-        dataPrint = ""
+        dataPrint = ["", "", ""]
 
         dataFAQ = self.db.load()
         if len(dataFAQ) != 0:
             for i, data in enumerate(dataFAQ):
-                dataPrint += f"{i+1}) Pregunta: {data['Question']}\nRespuesta: {data['Answer']}\n{'-'*60}\n"
-            message = "FAQ complete:\n```\n" + dataPrint + "```" 
-            await ctx.author.send(message)
+                if len(dataPrint[0]) < 1500:
+                    dataPrint[0] = dataPrint[0] + f"+{data['Question']}\n{data['Answer']}\n\n"
+                elif len(dataPrint[1]) < 1500:
+                    dataPrint[1] = dataPrint[1] + f"+{data['Question']}\n{data['Answer']}\n\n"
+                else:
+                    dataPrint[2] = dataPrint[2] + f"+{data['Question']}\n{data['Answer']}\n\n"
+            message = ["FAQ completo:\n```diff\n" + dataPrint[0] + "```", "```diff\n" + dataPrint[1] + "```", "```diff\n" + dataPrint[2] + "```"] 
+            await ctx.author.send(message[0])
+            if len(dataPrint[1]) != 0:
+                await ctx.author.send(message[1])
+            if len(dataPrint[2]) != 0:
+                await ctx.author.send(message[2])
         else:
             await ctx.author.send('No hay datos para esta consulta. Contactar con los administradores!')
 
@@ -86,15 +96,20 @@ class FAQ(commands.Cog):
         Poscondición: El bot envía por DM el FAQ de general
         '''
         dataGen = []
-        dataPrint = ""
+        dataPrint = ["", ""]
 
         dataFAQ = self.db.load()
         dataGen = [data for data in dataFAQ if data['Category'] == 'General']
         if len(dataGen) != 0:
             for i, data in enumerate(dataGen):
-                dataPrint += f"{i+1}) Pregunta: {data['Question']}\nRespuesta: {data['Answer']}\n{'-'*60}\n"
-            message = "General:\n```\n" + dataPrint + "```" 
-            await ctx.author.send(message)
+                if len(dataPrint[0]) < 1500:
+                    dataPrint[0] = dataPrint[0] + f"+{data['Question']}\n{data['Answer']}\n\n"
+                else:
+                    dataPrint[1] = dataPrint[1] + f"+{data['Question']}\n{data['Answer']}\n\n"
+            message = ["General:\n```diff\n" + dataPrint[0] + "```", "General (continuación):\n```diff\n" + dataPrint[1] + "```"] 
+            await ctx.author.send(message[0])
+            if len(dataPrint[1]) != 0:
+                await ctx.author.send(message[1])
         else:
             await ctx.author.send('No hay datos para esta consulta. Contactar con los administradores!')
 
@@ -107,15 +122,20 @@ class FAQ(commands.Cog):
         Poscondición: El bot envía por DM el FAQ de english
         '''
         dataGen = []
-        dataPrint = ""
+        dataPrint = ["", ""]
 
         dataFAQ = self.db.load()
         dataGen = [data for data in dataFAQ if data['Category'] == 'English']
         if len(dataGen) != 0:
             for i, data in enumerate(dataGen):
-                dataPrint += f"{i+1}) Pregunta: {data['Question']}\nRespuesta: {data['Answer']}\n{'-'*60}\n"
-            message = "English:\n```\n" + dataPrint + "```" 
-            await ctx.author.send(message)
+                if len(dataPrint[0]) < 1500:
+                    dataPrint[0] = dataPrint[0] + f"+{data['Question']}\n{data['Answer']}\n\n"
+                else:
+                    dataPrint[1] = dataPrint[1] + f"+{data['Question']}\n{data['Answer']}\n\n"
+            message = ["English:\n```diff\n" + dataPrint[0] + "```", "English (continuación):\n```diff\n" + dataPrint[1] + "```"] 
+            await ctx.author.send(message[0])
+            if len(dataPrint[1]) != 0:
+                await ctx.author.send(message[1])
         else:
             await ctx.author.send('No hay datos para esta consulta. Contactar con los administradores!')
 
@@ -128,15 +148,20 @@ class FAQ(commands.Cog):
         Poscondición: El bot envía por DM el FAQ de mentoring
         '''
         dataGen = []
-        dataPrint = ""
+        dataPrint = ["", ""]
 
         dataFAQ = self.db.load()
         dataGen = [data for data in dataFAQ if data['Category'] == 'Mentoring']
         if len(dataGen) != 0:
             for i, data in enumerate(dataGen):
-                dataPrint += f"{i+1}) Pregunta: {data['Question']}\nRespuesta: {data['Answer']}\n{'-'*60}\n"
-            message = "Mentoring:\n```\n" + dataPrint + "```" 
-            await ctx.author.send(message)
+                if len(dataPrint[0]) < 1500:
+                    dataPrint[0] = dataPrint[0] + f"+{data['Question']}\n{data['Answer']}\n\n"
+                else:
+                    dataPrint[1] = dataPrint[1] + f"+{data['Question']}\n{data['Answer']}\n\n"
+            message = ["Mentoring:\n```diff\n" + dataPrint[0] + "```", "Mentoring (continuación):\n```diff\n" + dataPrint[1] + "```"] 
+            await ctx.author.send(message[0])
+            if len(dataPrint[1]) != 0:
+                await ctx.author.send(message[1])
         else:
             await ctx.author.send('No hay datos para esta consulta. Contactar con los administradores!')
 
@@ -149,15 +174,20 @@ class FAQ(commands.Cog):
         Poscondición: El bot envía por DM el FAQ de coworking
         '''
         dataGen = []
-        dataPrint = ""
+        dataPrint = ["", ""]
 
         dataFAQ = self.db.load()
         dataGen = [data for data in dataFAQ if data['Category'] == 'Coworking']
         if len(dataGen) != 0:
             for i, data in enumerate(dataGen):
-                dataPrint += f"{i+1}) Pregunta: {data['Question']}\nRespuesta: {data['Answer']}\n{'-'*60}\n"
-            message = "Coworking:\n```\n" + dataPrint + "```" 
-            await ctx.author.send(message)
+                if len(dataPrint[0]) < 1500:
+                    dataPrint[0] = dataPrint[0] + f"+{data['Question']}\n{data['Answer']}\n\n"
+                else:
+                    dataPrint[1] = dataPrint[1] + f"+{data['Question']}\n{data['Answer']}\n\n"
+            message = ["Coworking:\n```diff\n" + dataPrint[0] + "```", "Coworking (continuación):\n```diff\n" + dataPrint[1] + "```"] 
+            await ctx.author.send(message[0])
+            if len(dataPrint[1]) != 0:
+                await ctx.author.send(message[1])
         else:
             await ctx.author.send('No hay datos para esta consulta. Contactar con los administradores!')
 
@@ -170,15 +200,20 @@ class FAQ(commands.Cog):
         Poscondición: El bot envía por DM el FAQ de roles
         '''
         dataGen = []
-        dataPrint = ""
+        dataPrint = ["", ""]
 
         dataFAQ = self.db.load()
         dataGen = [data for data in dataFAQ if data['Category'] == 'Roles']
         if len(dataGen) != 0:
             for i, data in enumerate(dataGen):
-                dataPrint += f"{i+1}) Pregunta: {data['Question']}\nRespuesta: {data['Answer']}\n{'-'*60}\n"
-            message = "Roles:\n```\n" + dataPrint + "```" 
-            await ctx.author.send(message)
+                if len(dataPrint[0]) < 1500:
+                    dataPrint[0] = dataPrint[0] + f"+{data['Question']}\n{data['Answer']}\n\n"
+                else:
+                    dataPrint[1] = dataPrint[1] + f"+{data['Question']}\n{data['Answer']}\n\n"
+            message = ["Roles:\n```diff\n" + dataPrint[0] + "```", "Roles (continuación):\n```diff\n" + dataPrint[1] + "```"] 
+            await ctx.author.send(message[0])
+            if len(dataPrint[1]) != 0:
+                await ctx.author.send(message[1])
         else:
             await ctx.author.send('No hay datos para esta consulta. Contactar con los administradores!')
 
@@ -191,15 +226,46 @@ class FAQ(commands.Cog):
         Poscondición: El bot envía por DM el FAQ de projects
         '''
         dataGen = []
-        dataPrint = ""
+        dataPrint = ["", ""]
 
         dataFAQ = self.db.load()
         dataGen = [data for data in dataFAQ if data['Category'] == 'Projects']
         if len(dataGen) != 0:
             for i, data in enumerate(dataGen):
-                dataPrint += f"{i+1}) Pregunta: {data['Question']}\nRespuesta: {data['Answer']}\n{'-'*60}\n"
-            message = "Projects:\n```\n" + dataPrint + "```" 
-            await ctx.author.send(message)
+                if len(dataPrint[0]) < 1500:
+                    dataPrint[0] = dataPrint[0] + f"+{data['Question']}\n{data['Answer']}\n\n"
+                else:
+                    dataPrint[1] = dataPrint[1] + f"+{data['Question']}\n{data['Answer']}\n\n"
+            message = ["Projects:\n```diff\n" + dataPrint[0] + "```", "Projects (continuación):\n```diff\n" + dataPrint[1] + "```"] 
+            await ctx.author.send(message[0])
+            if len(dataPrint[1]) != 0:
+                await ctx.author.send(message[1])
+        else:
+            await ctx.author.send('No hay datos para esta consulta. Contactar con los administradores!')
+
+    #! Subcomando study-group
+    @faq.command()
+    async def studygroup(self, ctx):
+        '''
+        Descripción: Consulta de DB sobre categoría English
+        Precondición: Escribir en un canal !faq english
+        Poscondición: El bot envía por DM el FAQ de english
+        '''
+        dataGen = []
+        dataPrint = ["", ""]
+
+        dataFAQ = self.db.load()
+        dataGen = [data for data in dataFAQ if data['Category'] == 'Study-Group']
+        if len(dataGen) != 0:
+            for i, data in enumerate(dataGen):
+                if len(dataPrint[0]) < 1500:
+                    dataPrint[0] = dataPrint[0] + f"+{data['Question']}\n{data['Answer']}\n\n"
+                else:
+                    dataPrint[1] = dataPrint[1] + f"+{data['Question']}\n{data['Answer']}\n\n"
+            message = ["Study Group:\n```diff\n" + dataPrint[0] + "```", "Study Group (continuación):\n```diff\n" + dataPrint[1] + "```"] 
+            await ctx.author.send(message[0])
+            if len(dataPrint[1]) != 0:
+                await ctx.author.send(message[1])
         else:
             await ctx.author.send('No hay datos para esta consulta. Contactar con los administradores!')
     
@@ -207,7 +273,7 @@ class FAQ(commands.Cog):
 
 class database:
     '''
-    Clase database: Realizo la consulta a FaunaDB por todos los datos que existen
+    Clase database: Realizo la consulta a FaunaDB por todos los datos que existen en la collection FAQs
     '''
     def __init__(self, bot):
         '''

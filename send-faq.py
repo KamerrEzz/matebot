@@ -43,7 +43,7 @@ def add_data(client):
     dataDict = {"Category": valueCategory, "Question": valueQuestion, "Answer": valueAnswer}
     client.query(
         q.create(
-            q.collection("faqs"),
+            q.collection("FAQs"),
             {"data": dataDict}
         )
     )
@@ -59,13 +59,13 @@ def check_data(client):
     # Indezacion de datos
     allfaqs = client.query(
         q.paginate(
-            q.match(q.index('allfaqs'))
+            q.match(q.index('all_faqs'))
         )
     )
     allfaqslist = [allfaqs['data']]
     refID = re.findall('\\d+', str(allfaqslist))
     for i in range(0, len(refID), 1):
-        faqDetails = client.query(q.get(q.ref(q.collection('faqs'), refID[i])))
+        faqDetails = client.query(q.get(q.ref(q.collection('FAQs'), refID[i])))
         detailsList = [faqDetails['data']]
         print(f'\n{i})\tPregunta: {detailsList[0].get("Question")}',
                 '\n\tRespuesta:', detailsList[0].get("Answer"),
